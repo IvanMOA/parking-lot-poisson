@@ -16,7 +16,7 @@ class PoissonRow {
     }
 }
 class PoissonTable {
-    constructor(private rows: PoissonRow[]) {
+    constructor(public rows: PoissonRow[]) {
     }
     addRow(row: PoissonRow) {
         this.rows.push(row)
@@ -31,7 +31,7 @@ function factorial(x: number): number {
     }
     return x * factorial(x - 1);
 }
-const poissonTable = new PoissonTable([])
+export const poissonTable = new PoissonTable([])
 for (let i = 0; i < k_total; i++) {
     const f = poisson(i, landa)
     poissonTable.addRow(new PoissonRow(i, new NumberRange(total, total + f)))

@@ -1,4 +1,3 @@
-import * as assert from "assert";
 import {possionCarsForHour} from "./poisson";
 import {NumberRange} from "./NumberRange";
 class RectangularNumber {
@@ -48,7 +47,6 @@ class ParkingLot {
         this.currentMinute += 1
     }
     parkCar(): void {
-        assert(this.hasFreeSpot)
         const minutesToOccupyFor = randomMinutesToOccupyParkingLotFor()
         console.log(`Se obtuvo un auto en el minuto ${this.currentMinute} y se estacionó por ${minutesToOccupyFor} minutos`)
         this.availableSpots.find(spot => spot.isFree)!.parkCar(this.currentMinute, minutesToOccupyFor)
@@ -56,32 +54,43 @@ class ParkingLot {
     clearSpotsIfPossible() {
         this.availableSpots.forEach(spot => spot.clearIfPossible(this.currentMinute))
     }
-}
-const parkingLot = new ParkingLot()
-let averageCarsPerYear =  0
-for (let i = 0; i <= 8760; i++) {
-    averageCarsPerYear += possionCarsForHour()
-}
-const MINUTES_PER_YEAR = 525600
-const carsPerMinute = (averageCarsPerYear / 525600)
-const minutesSimulated = MINUTES_PER_YEAR  // Un año
-let totalCarsThatCouldPark = 0
-let totalCars = 0
-for (let i = 0; i < minutesSimulated; i++) {
-    totalCars += 1
-    const shouldParkACar = Math.random() <= carsPerMinute
-    if (shouldParkACar) {
-        if (parkingLot.hasFreeSpot) {
-            parkingLot.parkCar()
-            totalCarsThatCouldPark += 1
-        } else {
-            console.log('Ocupado')
-        }
+    freeSpots(): number {
+        return this.availableSpots.filter( spot => spot.isFree ).length
     }
-    parkingLot.incrementMinute()
-    parkingLot.clearSpotsIfPossible()
 }
-const carsThatCouldNotPark = averageCarsPerYear - totalCarsThatCouldPark
-console.log(`De un total de ${averageCarsPerYear} autos por año, ${totalCarsThatCouldPark} se pudieron estacionar y ${carsThatCouldNotPark} no`)
-console.log(`${(totalCarsThatCouldPark / averageCarsPerYear ) * 100}% se pudieron estacionar`)
-export {}
+    const MINUTES_PER_YEAR = 525600
+export function generate(minutesToSimulate: number = MINUTES_PER_YEAR) {
+    const parkingLot = new ParkingLot()
+    let averageTotalCars = 0
+    for (let i = 0; i <= 8760; i++) {
+        averageTotalCars += possionCarsForHour()
+    }
+    const carsPerMinute = (averageTotalCars / 525600)
+    let totalCarsThatCouldPark = 0
+    let totalCars = 0
+    let totalFreeSpaces = parkingLot.freeSpots()
+    for (let i = 0; i < minutesToSimulate; i++) {
+        totalCars += 1
+        const shouldParkACar = Math.random() <= carsPerMinute
+        if (shouldParkACar) {
+            if (parkingLot.hasFreeSpot) {
+                parkingLot.parkCar()
+                totalCarsThatCouldPark += 1
+            } else {
+                console.log('Ocupado')
+            }
+        }
+        parkingLot.incrementMinute()
+        parkingLot.clearSpotsIfPossible()
+        totalFreeSpaces += parkingLot.freeSpots()
+    }
+    const carsThatCouldNotPark = averageTotalCars - totalCarsThatCouldPark
+    console.log(`De un total de ${averageTotalCars} autos por año, ${totalCarsThatCouldPark} se pudieron estacionar y ${carsThatCouldNotPark} no`)
+    console.log(`${(totalCarsThatCouldPark / averageTotalCars) * 100}% se pudieron estacionar`)
+    return {
+        averageTotalCars: (averageTotalCars / 12).toFixed(0),
+        totalCarsThatCouldPark,
+        carsThatCouldNotPark,
+        percentAvailability: ((totalFreeSpaces / minutesToSimulate ) / 6) * 100
+    }
+}
