@@ -50,7 +50,7 @@ class ParkingLot {
     parkCar(): void {
         assert(this.hasFreeSpot)
         const minutesToOccupyFor = randomMinutesToOccupyParkingLotFor()
-        console.log(`Got a car in minute ${this.currentMinute} and parked it for ${minutesToOccupyFor} minutes`)
+        console.log(`Se obtuvo un auto en el minuto ${this.currentMinute} y se estacionó por ${minutesToOccupyFor} minutos`)
         this.availableSpots.find(spot => spot.isFree)!.parkCar(this.currentMinute, minutesToOccupyFor)
     }
     clearSpotsIfPossible() {
@@ -75,13 +75,13 @@ for (let i = 0; i < minutesSimulated; i++) {
             parkingLot.parkCar()
             totalCarsThatCouldPark += 1
         } else {
-            console.log('Spot was occupied')
+            console.log('Ocupado')
         }
     }
     parkingLot.incrementMinute()
     parkingLot.clearSpotsIfPossible()
 }
 const carsThatCouldNotPark = averageCarsPerYear - totalCarsThatCouldPark
-console.log(`From a total of ${averageCarsPerYear}, ${totalCarsThatCouldPark} parked and ${carsThatCouldNotPark} could not`)
-console.log(`${(totalCarsThatCouldPark / averageCarsPerYear ) * 100}% of the cars were able to park`)
+console.log(`De un total de ${averageCarsPerYear} autos por año, ${totalCarsThatCouldPark} se pudieron estacionar y ${carsThatCouldNotPark} no`)
+console.log(`${(totalCarsThatCouldPark / averageCarsPerYear ) * 100}% se pudieron estacionar`)
 export {}
