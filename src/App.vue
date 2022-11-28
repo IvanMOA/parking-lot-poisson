@@ -12,7 +12,16 @@ const tableData = poissonTable.rows.map(row => ({
 	to: row.numberRange.to.toFixed(5)
 }))
 const integrantes = [
-	{name: 'Axel Ivan Morales Ortega', enrollment: '1911084'}
+	{name: 'Axel Ivan Morales Ortega', enrollment: '1911084'},
+	{name: 'Devany Magaly Flores López', enrollment: '1918077'},
+	{name: 'Jose Angel Nambo Moreno', enrollment: '1850769'},
+	{name: 'Alejandro Abeldano Rodriguez', enrollment: '1911151'},
+	{name: 'Erick Brandon Garcia Castillo', enrollment: '1796004'},
+	{name: 'Emiliano Juan Garcia Garcia', enrollment: '1922887'},
+	{name: 'Kevin Alan Correa García', enrollment: '1905149'},
+	{name: 'Luisa Fernanda Salazar Mauricio', enrollment: '1918943'},
+	{name: 'Daniel Jafet De León Nolazco', enrollment: '1918943'},
+	{name: 'Edgar Iván Hernández Hernández', enrollment: '1814860'},
 ]
 const {
 	totalCarsThatCouldPark,
